@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ block.super }}-Payment canceled
+{% endblock title %}
+
+
+{% block content %}
+{% include 'cart_aside.html' %}
+
+<main>
+{% include 'header.html' %}
+</main>
+
+<div>
+    <h1>Your payment has not been processed</h1>
+    <p>There was a problem processing your payment.</p>
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}
+    

@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ block.super }} - order
+{% endblock title %}
+
+
+{% block content %}
+{% include 'cart_aside.html' %}
+
+<main class="order_create">
+{% include 'header.html' %}
+    
+</main>
+
+<section class="checkout">
+    
+    <div class="content">
+        
+        <div class="order">
+            <h3>checkout</h3>
+            <form action="{% url 'orders:order_create' %}" method="post" autocomplete="off" novalidate>
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div>
+                        <label for="{{field.label_for_id}}">{{field.label_tag}}</label>
+                        {{field}}
+                        
+                        {% for error in field.errors %}
+                        <span class="error">{{error}}</span>
+                        {% endfor %}
+                            
+                        
+                    </div>
+                {% endfor %}
+                    
+
+                <button type="submit"> Place Order</button>
+            </form>
+        </div>
+        <div class="order">
+            <p>Your Order</p>
+                            
+            <ul>
+                {% for item in cart %}
+                <li>
+                    <span>{{item.quantity}} * {{item.product}}</span> 
+                    <span>$ {{item.total_price}}</span>
+                </li>
+                {% endfor %}
+                {% if cart.coupon %}
+                <li> 
+                    "{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% off)
+                    <span class="neg">- ${{ cart.get_discount|floatformat:2 }}</span>
+                </li> 
+                {% endif %}
+                
+                
+
+            </ul>
+            <p>Total: $ {{cart.get_total_price_after_discount|floatformat:2 }}</p>
+        </div>
+    </div>
+
+</section>
+
+{% include 'footer.html' %}
+{% endblock content %}
+    

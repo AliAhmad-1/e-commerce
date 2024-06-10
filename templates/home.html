@@ -1,0 +1,123 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block title %}
+
+   {% trans 'My Shop' %}
+
+{% endblock title %}
+    
+{% block content %}
+{% include 'cart_aside.html' %}
+
+<main class="home_main">
+    {% include 'header.html' %}
+    <div class="text">
+        <p>{% trans 'Womens collection 2024' %}</p>
+        <h3>{% trans 'NEW ARRIVALS' %}</h3>
+        <a href="#">{% trans 'SHOP NOW' %}</a>
+    </div>
+
+
+</main>
+
+<section class="photos">
+
+    <div class="cart">
+        <div class="child bg-1">
+        </div>
+
+        <div class="text">
+            <h3>{% trans 'Accessories' %}</h3>
+            <p>{% trans 'Spring 2024' %}</p>
+        </div>
+        <h3 class="shop_now"><a href="#">{% trans 'SHOP NOW' %}</a></h3>
+
+
+    </div>
+    <div class="cart">
+        <div class="child bg-2">
+        </div>
+        <div class="text">
+            <h3>{% trans 'Women' %}</h3>
+            <p>{% trans 'Spring 2018' %}</p>
+        </div>
+        <h3 class="shop_now"><a href="#">{% trans 'SHOP NOW' %}</a></h3>
+    </div>
+
+    <div class="cart">
+        <div class="child bg-3">
+        </div>
+        <div class="text">
+            <h3>{% trans 'Men' %}</h3>
+            <p>{% trans 'New Trend' %}</p>
+        </div>
+        <h3 class="shop_now"><a href="#">{% trans 'SHOP NOW' %}</a></h3>
+    </div>
+
+</section>
+
+
+<h1 class="product_overview">{% trans 'PRODUCT OVERVIEW' %}</h1>
+<section class="products">
+    <nav>
+        <ul>
+            <li {% if not category %} class="selected" {% endif %}>
+                <span data-slug=""  onclick="filter_products(this);">{% trans 'All Products' %}</span>
+            </li>
+
+            {% for c in categories %}
+
+            <li>
+              
+                <span data-slug="{{c.slug}}" onclick="filter_products(this);">{{c.name}}</span>
+            </li>
+            {% endfor %}
+                
+        </ul>
+    </nav>
+    <div class="filter">
+        <div>
+            <img src="{% static 'images/icons8-filter-50.png' %}" alt="icons8-filter-50.png">
+            <span>Filter</span></div>
+    </div>
+</section>
+<div class="cards">
+    
+    {% for p in products %}
+    <div class="card" >
+        <img src="{{p.image.url}}" alt="test.jpg" class="product_image">
+        <div class="info">
+            <div>
+                <p class="product_name">{{p.name}}</p>
+                <p class="product_price">{{p.price}} $</p>
+            </div>
+            <i class="fa fa-heart-o"></i>
+        </div>
+        <div class="interact">
+            <form action="" method='post'>
+                {% csrf_token %}
+                <input type="hidden" value="1" name="quantity">
+                <input type="hidden" value="False" name="override">
+            
+                <button type="button" data-p_id="{{p.id}}" onclick="cart_add_one(this);"><i class="fa fa-shopping-cart" ></i></button>
+            </form>
+
+            <i class="fa fa-heart-o"></i>
+            <a href="{{p.get_absolute_url}}"><i class="fa fa-eye"></i></a>
+          
+        </div>
+    </div>
+    {% empty %}
+    <p class="empty">No products with this category</p>
+    {% endfor %}
+        
+
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}
+    

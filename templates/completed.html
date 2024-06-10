@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ block.super }}-Payment successful
+{% endblock title %}
+
+
+{% block content %}
+{% include 'cart_aside.html' %}
+
+<main class="completed_main">
+{% include 'header.html' %}
+</main>
+
+<div class="completed">
+    <h1>Your payment was successful</h1>
+    <p>Your payment has been processed successfully.</p> 
+    
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}
+    

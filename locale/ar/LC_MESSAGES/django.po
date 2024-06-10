@@ -1,0 +1,208 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-09 00:03+0300\n"
+"PO-Revision-Date: 2024-06-08 22:39+0000\n"
+"Last-Translator:   <>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: .\cart\forms.py:5
+msgid "Quantity"
+msgstr "الكمية"
+
+#: .\cart\urls.py:9
+msgid "add/"
+msgstr "اضافه/"
+
+#: .\cart\urls.py:11
+msgid "remove/"
+msgstr "حذف/"
+
+#: .\coupons\forms.py:5
+msgid "Coupon"
+msgstr "قسيمة"
+
+#: .\coupons\urls.py:8
+msgid "apply/"
+msgstr "يتقدم/"
+
+#: .\e_commerce\urls.py:15
+msgid "cart/"
+msgstr "عربة التسوق/"
+
+#: .\e_commerce\urls.py:16
+msgid "order/"
+msgstr "طلب/"
+
+#: .\e_commerce\urls.py:17
+msgid "payment/"
+msgstr "قسط/"
+
+#: .\e_commerce\urls.py:18
+msgid "coupons/"
+msgstr ""
+
+#: .\orders\models.py:10
+msgid "fisrt name"
+msgstr "الاسم الاول"
+
+#: .\orders\models.py:11
+msgid "last name"
+msgstr "الاسم الاخير"
+
+#: .\orders\models.py:12
+msgid "e-mail"
+msgstr "البريد الالكتروني "
+
+#: .\orders\models.py:13
+msgid "address"
+msgstr "العنوان"
+
+#: .\orders\models.py:14
+msgid "postal code"
+msgstr "الرمز البريدي"
+
+#: .\orders\models.py:15
+msgid "city"
+msgstr "المدينه"
+
+#: .\orders\models.py:16
+msgid "created"
+msgstr "تاريخ الانشاء"
+
+#: .\orders\models.py:17
+msgid "updated"
+msgstr "تاريخ التعديل"
+
+#: .\orders\models.py:18
+msgid "paid"
+msgstr "الدفع"
+
+#: .\orders\urls.py:7
+msgid "create/"
+msgstr "انشاء/"
+
+#: .\orders\urls.py:8
+msgid "admin/order/<int:order_id>/"
+msgstr ""
+
+#: .\orders\urls.py:9
+msgid "admin/order/<int:order_id>/pdf/"
+msgstr ""
+
+#: .\payment\urls.py:7
+msgid "process/"
+msgstr ""
+
+#: .\payment\urls.py:8
+msgid "completed/"
+msgstr ""
+
+#: .\payment\urls.py:9
+msgid "canceled/"
+msgstr ""
+
+#: .\shop\urls.py:11
+msgid "shop/products/"
+msgstr ""
+
+#: .\shop\urls.py:12
+msgid "shop/product/<int:id>/<slug:slug>/"
+msgstr ""
+
+#: .\templates\header.html:82
+msgid "Home"
+msgstr "الصفحه الرئيسية"
+
+#: .\templates\header.html:85
+msgid "Shop"
+msgstr "تسوق الان"
+
+#: .\templates\header.html:88
+msgid "Features"
+msgstr "ميزات"
+
+#: .\templates\header.html:92
+msgid "Blog"
+msgstr "مدونه"
+
+#: .\templates\header.html:95
+msgid "About"
+msgstr "حول"
+
+#: .\templates\header.html:98
+msgid "Contact"
+msgstr "تواصل"
+
+#: .\templates\home.html:8
+msgid "My Shop"
+msgstr "متجري الالكتروني"
+
+#: .\templates\home.html:18
+msgid "Womens collection 2024"
+msgstr "مجموعه نسائيه 2024"
+
+#: .\templates\home.html:19
+msgid "NEW ARRIVALS"
+msgstr "الوافدون الجدد"
+
+#: .\templates\home.html:20 .\templates\home.html:36 .\templates\home.html:47
+#: .\templates\home.html:57
+msgid "SHOP NOW"
+msgstr "تسوق الآن"
+
+#: .\templates\home.html:33
+msgid "Accessories"
+msgstr "مُكَمِّلات"
+
+#: .\templates\home.html:34
+msgid "Spring 2024"
+msgstr "ربيع 2024"
+
+#: .\templates\home.html:44
+msgid "Women"
+msgstr "نساء"
+
+#: .\templates\home.html:45
+msgid "Spring 2018"
+msgstr "ربيع 2024"
+
+#: .\templates\home.html:54
+msgid "Men"
+msgstr "رجال"
+
+#: .\templates\home.html:55
+msgid "New Trend"
+msgstr "الاتجاه الجديد"
+
+#: .\templates\home.html:63
+msgid "PRODUCT OVERVIEW"
+msgstr "نظرة عامة على المنتج"
+
+#: .\templates\home.html:68
+msgid "All Products"
+msgstr "كل المنتجات"
+
+#: .\templates\home.html:76
+#, python-format
+msgid ""
+"\n"
+"                    %(category_name)s\n"
+"                "
+msgstr ""
+"\n"
+"%(category_name)s"

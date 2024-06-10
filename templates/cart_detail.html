@@ -1,0 +1,129 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ block.super }} - cart_detail
+{% endblock title %}
+
+
+{% block content %}
+{% include 'cart_aside.html' %}
+<main class="cart_main">
+{% include 'header.html' %}
+    
+</main>
+
+
+<section class="cart_detail">
+    <p class="title">Home > Shopping Cart </p>
+    <div class="content">
+
+        <table class="cart">
+            <thead>
+                
+
+                    <tr>
+                        <th>Product-Image</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Remove</th>
+                        <th>Unit Price</th>
+                        <th>Price</th>
+    
+                    </tr>
+
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                    
+                {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{{product.get_absolute_url}}">
+                            <img src="{{ product.image.url }}" alt="product_image" width="170px" height="100px">
+
+                        </a>
+                    </td>
+                    <td>{{product.name}}</td>
+                 
+                    <td><form action="" method="post">
+                        {% csrf_token %}
+                        {{ item.update_quantity_form.quantity }}
+                        {{ item.update_quantity_form.override }}
+                        <button type="button" data-p_id="{{product.id}}" onclick="cart_update(this);"><i class="fa fa-edit edit"></i></button>
+                       
+                    </form></td>
+                    <td>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button type="button" onclick='cart_remove(this);' data-p_id="{{product.id}}"><i class="fa fa-trash-o remove"></i></button>
+
+                        </form>
+                        
+                    </td>
+                    <td>$ {{item.price}}</td>
+                    <td>$ {{item.total_price}}</td>
+                </tr>
+
+                {% endwith %}
+                {% empty %}   
+                <tr>
+                    <td colspan="6"><p class="empty"> Your cart is empty !!</p> </td>
+                    
+                </tr>
+                {% endfor %}
+
+
+
+            </tbody>
+            <tfoot>
+                
+                {% if cart.coupon %}
+                <tr class="subtotal">
+                        <td colspan="5">Subtotal</td>
+                        <td class="num">${{ cart.get_total_price|floatformat:2 }}</td>
+                </tr>
+                <tr class="coupon">
+                        <td colspan="5">      "{{ cart.coupon.code }}" coupon      ({{ cart.coupon.discount }}% off)    </td>
+                        <td class="num neg">      - ${{ cart.get_discount|floatformat:2 }}    </td> 
+                </tr>
+                {% else %}
+                <tr style="background-color: aliceblue;">
+                    <td style="font-size: 15px; color: red; font-weight: 500;">No coupon Found..!</td>
+                </tr>
+                {% endif %}
+                    
+                <tr>
+                    <td colspan="5">Total</td>
+                    <td>$ {{cart.get_total_price_after_discount|floatformat:2 }}</td>
+                </tr>
+            </tfoot>
+
+        </table>
+        <div class="coupon_form">
+            <div>
+                <p>Apply a coupon:</p> 
+                <form action="{% url 'coupons:apply' %}" method="POST" novalidate>
+                    {% csrf_token %}
+                    {{form}}
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+
+            <a href="{% url 'orders:order_create' %}"><button class="checkout">Checkout</button></a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+</section>
+
+{% include 'footer.html' %}
+{% endblock content %}
+    

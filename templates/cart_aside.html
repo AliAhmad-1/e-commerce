@@ -1,0 +1,57 @@
+{% load static %}
+
+<aside>
+    <div class="base_container">
+
+        <div class="s1">
+            <div>
+                <p>Your Cart</p>
+                <i class="fa fa-times close" aria-hidden="true"></i>
+            </div>
+            <div class="products_cart">
+                
+                {% for item in cart %}
+                    
+                    {% with product=item.product  %}
+                    <div class="product">
+                        <div class="first">
+                            <img src="{{product.image.url}}" width="50px" height="50px">
+                            <div class="info">
+                                <p class="product_name">{{product.name}}</p>
+                                <p><span class="quantity">{{item.quantity}} x </span><span class="price">$ {{product.price}}</span></p>
+                            </div>
+                        </div>
+                        <form action="{% url 'cart:cart_remove' %}" method="post">
+                            {% csrf_token %}
+                            <button type="button" style="border: none; background-color: transparent;" data-p_id="{{product.id}}" onclick="cart_remove(this);"><i class="fa fa-trash-o remove" ></i></button>
+
+                        </form>
+                        
+                       
+                    </div>
+    
+                    {% endwith %}
+                {% empty %}
+                    <p class="empty" style="text-align: center; margin-top: 4rem; color:#222;">Your cart is empty .</p>
+                {% endfor %}
+                    
+
+
+
+            </div>
+        </div>
+        <div class="s2">
+            <div class="total_price">
+                <p>Subtotal</p>
+                <p class="total_price">$ {{cart.get_total_price}} USD</p>
+            </div>
+            <div>
+                <a href="{% url 'cart:cart_detail' %}">VIEW CART</a>
+                <a href="{% url 'orders:order_create' %}">CHECK OUT</a>
+            </div>
+        </div>
+
+    </div>
+
+
+</aside>

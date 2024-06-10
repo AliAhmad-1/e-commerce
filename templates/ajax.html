@@ -1,0 +1,320 @@
+{% load static %}
+
+<script>
+function mouseover(){
+    const cards = $('.card');
+    $.each(cards, function() {
+        $(this).mouseover(function() {
+    
+            $(this).find('.interact').css({ 'left': "10px", "opacity": "1" })
+        });
+        $(this).mouseleave(function() {
+    
+            $(this).find('.interact').css({ 'left': "-2rem", "opacity": "0" })
+    
+        });
+    });
+}
+mouseover();
+
+function cart_remove(this_){
+    csrftoken=$(this_).prev().val()
+    product_id=$(this_).attr('data-p_id')
+    
+    
+    
+    
+    data={'csrfmiddlewaretoken':csrftoken,'product_id':product_id}
+    $.ajax({
+    url:"{% url 'cart:cart_remove' %}",
+    method:'post',
+    data:data,
+    success:function(response){
+    cart=response.cart
+    if(response.status=='Ok'){
+        $(this_).parents('.product').fadeOut()
+        $(this_).parents('tr').fadeOut()
+        num_items=0
+        subtotal=0
+        for(i=0; i< cart.length;i++){
+            num_items+=parseInt(cart[i].quantity)
+            subtotal+=parseFloat(cart[0].total_price)
+        }
+        empty=false
+        if (cart.length==0){
+            empty=true
+        }
+
+        if(empty){
+            $(this_).parents('.products_cart').html(` 
+            <p class="empty" style="text-align: center; margin-top: 4rem; color:#222;">Your cart is empty .</p>
+           `)
+           $('aside .products_cart').html(`
+           <p class="empty" style="text-align: center; margin-top: 4rem; color:#222;">Your cart is empty .</p>
+           `)
+            $('.cart_detail .cart tbody tr').html(`
+            <td colspan="6"><p class="empty"> Your cart is empty !!</p> </td>
+           `)
+        }
+        $('aside .s2  p.total_price').html(`$ ${subtotal} USD`)
+        $('header .shopping-cart span').html(num_items)
+    }
+
+
+    }
+    })
+
+
+
+}
+    
+function filter_products(this_){
+  
+    var category_slug=$(this_).attr('data-slug');
+    var result=""
+    data={'category_slug':category_slug}
+
+    $.ajax({
+    url:'{% url 'shop:products_list' %}',
+    method:'get',
+    data:data,
+    success:function(response){
+     
+        data=response.products
+        category=response.category
+        console.log($(this_).html())
+        if($(this_).html()==category.name | $(this_).html()==category ){
+            $('section.products ul li').removeClass('selected');
+            $(this_).parent().addClass('selected');
+            
+        }
+
+
+        
+        
+    
+        for(i=0;i<data.length;i++){
+            var product_id=data[i].id
+            var product_slug=data[i].slug
+           
+
+        result+=`
+        <div class="card">
+            <img src="${data[i].image}" alt="test.jpg" class="product_image">
+            <div class="info">
+                <div>
+                    <p class="product_name">${data[i].name}</p>
+                    <p class="product_price">${data[i].price} $</p>
+                </div>
+                <i class="fa fa-heart-o"></i>
+            </div>
+            <div class="interact">
+                <form action="" method='post'>
+                    {% csrf_token %}
+                    <input type="hidden" value="1" name="quantity">
+                    <input type="hidden" value="False" name="override">
+                
+                    <button type="button" data-p_id="${product_id}" onclick="cart_add_one(this);"><i class="fa fa-shopping-cart" ></i></button>
+                </form>
+                
+                <i class="fa fa-heart-o"></i>
+                <a href="shop/product/${product_id}/${product_slug}/"><i class="fa fa-eye"></i></a>
+                
+            </div>
+        </div>
+        `
+        }
+        
+        $('.cards').html(result)
+        if(data.length==0){
+            $('.cards').html(` <p class="empty">No products with this category</p>`)
+        }
+        mouseover();
+   
+    }
+    
+    })
+
+
+}
+
+function cart_update(this_){
+    var product_id=$(this_).attr('data-p_id');
+    
+    var quantity=$(this_).prevAll('select').val()
+    
+    var override=$(this_).prevAll('input[name=override]').val()
+    
+    var csrf_token=$(this_).prevAll('input[name=csrfmiddlewaretoken]').val()
+    
+    data={'product_id':product_id,'quantity':quantity,'override':override,'csrfmiddlewaretoken':csrf_token}
+    console.log(data)
+    $.ajax({
+    url:"{% url 'cart:cart_add' %}",
+    method:'POST',
+    data:data,
+    success:function(response){
+       
+        cart=response.cart
+        
+        result=''
+        subtotal=0
+        num_items=0
+        for(i=0; i< cart.length;i++){
+        num_items+=parseInt(cart[i].quantity)
+        subtotal+=parseFloat(cart[i].total_price)
+        
+        result+=`
+        <div class="product">
+            <div class="first">
+                <img src="${cart[i].image}" width="50px" height="50px">
+                <div class="info">
+                    <p class="product_name">${cart[i].name}</p>
+                    <p><span class="quantity">${cart[i].quantity} x </span><span class="price">$ ${cart[i].price}</span></p>
+                </div>
+            </div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <button type="button" style="border: none; background-color: transparent;" data-p_id="{{product.id}}" onclick="cart_remove(this);"><i class="fa fa-trash-o remove" ></i></button>
+
+            </form>
+            
+           
+        </div>
+        `
+        
+        }
+        $('aside .products_cart').html(result)
+        $('aside .s2 p.total_price').html(`${subtotal}.00`)
+        $('header .shopping-cart span').html(num_items)
+
+
+
+    
+    }
+
+    })
+
+}
+function cart_add(this_){
+    var product_id=$(this_).attr('data-p_id');
+    
+    var quantity=$(this_).prevAll().find('select').val()
+    
+    var override=$(this_).prevAll().find('input[name=override]').val()
+    
+    var csrf_token=$(this_).prevAll('input[name=csrfmiddlewaretoken]').val()
+    
+    data={'product_id':product_id,'quantity':quantity,'override':override,'csrfmiddlewaretoken':csrf_token}
+    console.log(data)
+    $.ajax({
+    url:"{% url 'cart:cart_add' %}",
+    method:'POST',
+    data:data,
+    success:function(response){
+       
+        cart=response.cart
+        
+        result=''
+        subtotal=0
+        num_items=0
+        for(i=0; i< cart.length;i++){
+        num_items+=parseInt(cart[i].quantity)
+        subtotal+=parseFloat(cart[i].total_price)
+        
+        result+=`
+        <div class="product">
+            <div class="first">
+                <img src="${cart[i].image}" width="50px" height="50px">
+                <div class="info">
+                    <p class="product_name">${cart[i].name}</p>
+                    <p><span class="quantity">${cart[i].quantity} x </span><span class="price">$ ${cart[i].price}</span></p>
+                </div>
+            </div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <button type="button" style="border: none; background-color: transparent;" data-p_id="{{product.id}}" onclick="cart_remove(this);"><i class="fa fa-trash-o remove" ></i></button>
+
+            </form>
+            
+           
+        </div>
+        `
+        
+        }
+        $('aside .products_cart').html(result)
+        $('aside .s2 p.total_price').html(`${subtotal}.00`)
+        $('header .shopping-cart span').html(num_items)
+
+
+
+    
+    }
+
+    })
+
+}
+
+function cart_add_one(this_){
+    var product_id=$(this_).attr('data-p_id');
+    
+    var quantity=$(this_).prevAll('input[name=quantity]').val()
+    
+    var override=$(this_).prevAll('input[name=override]').val()
+    
+    var csrf_token=$(this_).prevAll('input[name=csrfmiddlewaretoken]').val()
+    
+    data={'product_id':product_id,'quantity':quantity,'override':override,'csrfmiddlewaretoken':csrf_token}
+    console.log(data)
+    $.ajax({
+    url:"{% url 'cart:cart_add' %}",
+    method:'POST',
+    data:data,
+    success:function(response){
+       
+        cart=response.cart
+        
+        result=''
+        subtotal=0
+        num_items=0
+        for(i=0; i< cart.length;i++){
+        num_items+=parseInt(cart[i].quantity)
+        subtotal+=parseFloat(cart[i].total_price)
+        
+        result+=`
+        <div class="product">
+            <div class="first">
+                <img src="${cart[i].image}" width="50px" height="50px">
+                <div class="info">
+                    <p class="product_name">${cart[i].name}</p>
+                    <p><span class="quantity">${cart[i].quantity} x </span><span class="price">$ ${cart[i].price}</span></p>
+                </div>
+            </div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <button type="button" style="border: none; background-color: transparent;" data-p_id="${cart[i].product_id}" onclick="cart_remove(this);"><i class="fa fa-trash-o remove" ></i></button>
+
+            </form>
+            
+           
+        </div>
+        `
+        
+        }
+        $('aside .products_cart').html(result)
+        $('aside .s2 p.total_price').html(`${subtotal}.00`)
+        $('header .shopping-cart span').html(num_items)
+
+
+
+    
+    }
+
+    })
+
+}
+
+
+
+
+</script>

@@ -1,0 +1,121 @@
+{% load static %}
+{% load i18n %}
+<header>
+    <section class="top_navbar">
+        <nav class="top_nav">
+            <div class="left_nav">
+                <div>
+                    <img src="{% static 'images/icons8-email-50.png' %}" alt="icons8-email-50.png" class="email_icon">
+                    <p class="top_email"> hello@testemail.com</p>
+                </div>
+                <p class="free-p">Free Shipping for all Order of $99</p>
+
+            </div>
+            <div class="right_nav">
+                <div>
+                    <i class="fa fa-facebook"></i>
+                    <i class="fa fa-twitter"></i>
+                    <i class="fa fa-linkedin"></i>
+                    <i class="fa fa-pinterest-p"></i>
+                </div>
+                <div>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    
+                    {% for language in  languages %}
+                    <ul style="list-style-type: none; display: flex; column-gap: 12px;">
+                        <li >
+                            <a href="/{{ language.code }}/"          {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %} style="color: white; text-decoration: none;"> 
+                                           {{ language.name_local }}
+                            </a> 
+                        </li
+                    </ul>
+
+                    {% endfor %}
+                        
+               
+                    {% comment %} <form action="{% url 'set_language' %}" method="post" id="languageform">
+                    {% csrf_token %}
+                    
+                    <select name="Language"  id="language" onchange="ChangeLanguage(this.value)">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                        
+                        <option value="{{language.code}}"
+                        {% if language.code == LANGUAGE_CODE %}
+                            selected
+                        {% endif %}
+                        >
+                            {{language.name_local}} ({{language.code}})
+                        </option>
+                            
+                        {% endfor %}
+                            
+                    </select>
+                    
+
+                </form>  {% endcomment %}
+                   {% comment %} <img src="{% static 'images/icons8-usa-flag-48.png' %}" alt="american-flag-png.jpg" class="language_icon">
+                    <span>English</span>
+                    <span class="arrow-down">^</span> {% endcomment %}
+
+                </div>
+                <div>
+                    <i class="fa fa-user"></i>
+                    <span>Login</span>
+                </div>
+            </div>
+        </nav>
+
+    </section>
+    <section class="fixed-nav">
+        <div class="left">
+            <img src="{% static 'images/logo.png' %}" alt="logo.png" class="Logo">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{% url 'shop:home' %}">{% trans 'Home' %} </a>
+                    </li>
+                    <li>
+                        <a href="#">{% trans 'Shop' %}</a>
+                    </li>
+                    <li>
+                        <a href="#">{% trans 'Features' %}</a>
+                        <span class="hot">HOT</span>
+                    </li>
+                    <li>
+                        <a href="#">{% trans 'Blog' %}</a>
+                    </li>
+                    <li>
+                        <a href="#">{% trans "About" %}</a>
+                    </li>
+                    <li>
+                        <a href="#">{% trans 'Contact' %}</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="right">
+            <div class="likes">
+                <img src="{% static 'images/icons8-heart-24 (1).png' %}" alt="icons8-heart-24 (1).png">
+                <span>0</span>
+            </div>
+            <div class="shopping-cart">
+                <img src="{% static 'images/icons8-shopping-bag-50.png' %}" alt="icons8-shopping-bag-50.png">
+                <span>{{cart|length}}</span>
+            </div>
+        </div>
+    </section>
+</header>
+<script>
+    function ChangeLanguage(LanguageCode){
+    const form=document.getElementById('languageform');
+    form.elements.language.value=LanguageCode;
+    
+    form.submit();
+    console.log(LanguageCode)
+    }
+</script>

@@ -1,0 +1,86 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ block.super }}-product_detail
+{% endblock title %}
+
+
+{% block content %}
+{% include 'cart_aside.html' %}
+
+<main class="product_main">
+{% include 'header.html' %}
+    
+</main>
+
+<section class="product_detail" >
+    <div class="content">
+        <div class="product_image">
+            <img src="{{product.image.url}}" alt="product-15" width="300px" height="400px">
+        </div>
+        <div class="info">
+            <p class="product_name">{{product.name}}</p>
+            <p class="product_description">{{product.description}}</p>
+            <p class="product_price"> $ {{product.price}}</p>
+            <div class="add-cart">
+                <div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        
+                        {{form}}
+                            
+                        <button type="button" onclick="cart_add(this);" data-p_id="{{product.id}}"><i class="fa fa-shopping-cart"></i>ADD TO CART</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+{% if recomended_products %}
+<div class="recommendations">
+    <h3>People who bought this also bought</h3>
+    <div class="cards">
+    
+        {% for p in recomended_products %}
+        <div class="card" >
+            <img src="{{p.image.url}}" alt="test.jpg" class="product_image">
+            <div class="info">
+                <div>
+                    <p class="product_name">{{p.name}}</p>
+                    <p class="product_price">{{p.price}} $</p>
+                </div>
+                <i class="fa fa-heart-o"></i>
+            </div>
+            <div class="interact">
+                <form action="" method='post'>
+                    {% csrf_token %}
+                    <input type="hidden" value="1" name="quantity">
+                    <input type="hidden" value="False" name="override">
+                
+                    <button type="button" data-p_id="{{p.id}}" onclick="cart_add_one(this);"><i class="fa fa-shopping-cart" ></i></button>
+                </form>
+    
+                <i class="fa fa-heart-o"></i>
+                <a href="{{p.get_absolute_url}}"><i class="fa fa-eye"></i></a>
+              
+            </div>
+        </div>
+
+        {% endfor %}
+            
+    
+    
+    </div>
+</div>
+{% endif %}
+    
+
+
+{% include 'footer.html' %}
+{% endblock content %}
+    
